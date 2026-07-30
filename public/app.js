@@ -1,16 +1,18 @@
 const statusBox = document.querySelector('#status');
 const buttons = document.querySelectorAll('.buy-button');
 
-const STRIPE_PAYMENT_LINK =
-  'https://buy.stripe.com/9B6eVf8572VscUR5pV0VO00';
+const REVOLUT_PAYMENT_LINK =
+  'https://revolut.me/ibrahiq7g5?currency=EUR&amount=300';
 
 function showStatus(message) {
+  if (!statusBox) return;
+
   statusBox.textContent = message;
   statusBox.className = 'status-message visible';
 
-  window.clearTimeout(showStatus.timer);
+  clearTimeout(showStatus.timer);
 
-  showStatus.timer = window.setTimeout(() => {
+  showStatus.timer = setTimeout(() => {
     statusBox.className = 'status-message';
   }, 4000);
 }
@@ -19,15 +21,16 @@ buttons.forEach((button) => {
   button.addEventListener('click', () => {
     const productId = button.dataset.product;
 
+    // تفعيل الدفع فقط للساعة الكلاسيكية بسعر 3 يورو
     if (productId === 'classic') {
       button.disabled = true;
       button.textContent = 'جارٍ فتح الدفع…';
-      window.location.href = STRIPE_PAYMENT_LINK;
+
+      window.location.href = REVOLUT_PAYMENT_LINK;
       return;
     }
 
-    showStatus(
-      'هذه الساعة للعرض فقط. الدفع مفعّل على ساعة €3.'
-    );
+    // الساعات الأخرى للعرض فقط
+    showStatus('هذه الساعة للعرض فقط. الدفع مفعّل على ساعة €3.');
   });
 });
