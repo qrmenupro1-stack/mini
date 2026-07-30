@@ -1,46 +1,33 @@
 const statusBox = document.querySelector('#status');
 const buttons = document.querySelectorAll('.buy-button');
 
-function showStatus(message, type = 'info') {
+const STRIPE_PAYMENT_LINK =
+  'https://buy.stripe.com/9B6eVf8572VscUR5pV0VO00';
+
+function showStatus(message) {
   statusBox.textContent = message;
-  statusBox.className = `status-message visible${type === 'error' ? ' error' : ''}`;
+  statusBox.className = 'status-message visible';
+
   window.clearTimeout(showStatus.timer);
+
   showStatus.timer = window.setTimeout(() => {
     statusBox.className = 'status-message';
-  }, 4500);
-}
-
-const params = new URLSearchParams(window.location.search);
-if (params.get('cancelled') === '1') {
-  showStatus('تم إلغاء الدفع، ولم يتم خصم أي مبلغ.');
-  window.history.replaceState({}, '', '/');
+  }, 4000);
 }
 
 buttons.forEach((button) => {
-  button.addEventListener('click', async () => {
+  button.addEventListener('click', () => {
     const productId = button.dataset.product;
-    const originalText = button.textContent;
 
-    buttons.forEach((item) => { item.disabled = true; });
-    button.textContent = 'جارٍ فتح الدفع…';
-
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ productId })
-      });
-
-      const data = await response.json();
-      if (!response.ok || !data.url) {
-        throw new Error(data.error || 'تعذر بدء عملية الدفع.');
-      }
-
-      window.location.assign(data.url);
-    } catch (error) {
-      showStatus(error.message || 'حدث خطأ غير متوقع.', 'error');
-      buttons.forEach((item) => { item.disabled = false; });
-      button.textContent = originalText;
+    if (productId === 'classic') {
+      button.disabled = true;
+      button.textContent = 'جارٍ فتح الدفع…';
+      window.location.href = STRIPE_PAYMENT_LINK;
+      return;
     }
+
+    showStatus(
+      'هذه الساعة للعرض فقط. الدفع مفعّل على ساعة €3.'
+    );
   });
 });
