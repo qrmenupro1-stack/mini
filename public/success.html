@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نتيجة الدفع | MiniWatch</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="result-page">
+    <section class="result-card">
+      <div id="resultIcon" class="result-icon">…</div>
+      <h1 id="resultTitle">جارٍ التأكد من الدفع</h1>
+      <p id="resultText">لحظة واحدة، نتأكد من Stripe أن العملية تمت بنجاح.</p>
+
+      <div id="paymentSummary" class="payment-summary">
+        <div><span>المنتج</span><strong id="productName">—</strong></div>
+        <div><span>المبلغ</span><strong id="amountPaid">—</strong></div>
+        <div><span>الحالة</span><strong id="paymentStatus">—</strong></div>
+      </div>
+
+      <a class="back-link" href="/">العودة إلى المتجر</a>
+    </section>
+  </main>
+  <script src="/success.js" defer></script>
+</body>
+</html>
